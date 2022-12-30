@@ -20,12 +20,16 @@ for (let i = 0; i < button_list.length ; i++)
     if (button.className == "clear")
     {
         button.addEventListener("click", function(){
-            display_string += this.textContent;
+            display_string = display_string.slice(0, -1);
             display.textContent = display_string;
             } )
     }
     if (button.className == "all-clear")
     {
+        button.addEventListener("click", function(){
+            display_string = "";
+            display.textContent = display_string;
+            })
     }
     //conditional for operators;
     if (button.className == "add" || 
@@ -39,8 +43,9 @@ for (let i = 0; i < button_list.length ; i++)
 
     }
     //conditional for equals
-    if (button.className == "")
+    if (button.className == "equal")
     {
+        button.addEventListener("click", operate);
     }
 }
 
@@ -48,7 +53,26 @@ for (let i = 0; i < button_list.length ; i++)
 
 // operate function
 function operate(){
+    let first_sum = "";
+    let second_sum = "";
+    let change = false;
+    for (let i = 0; i < display.length; i++)
+    {
+        if (Number.isInteger(display[i]) == false)
+        {
+            change = true;
+        }
 
+        else if (change = false)
+        {
+            first_sum += display[i];
+        }
+
+        else {
+            second_sum += display[i]
+        }
+    }
+    console.log(first_sum, second_sum);
 }
 
 // operator functions
