@@ -1,9 +1,11 @@
 //intialise all the values
 let display_string = "";
+//checker for operators
+let check = 0;
 let display = document.querySelector(".display");
 display.textContent = display_string;
 let button_list = document.querySelectorAll("button");
-console.log(button_list[0]);
+
 // loop to add event listeners to buttons
 for (let i = 0; i < button_list.length ; i++)
 {
@@ -14,14 +16,29 @@ for (let i = 0; i < button_list.length ; i++)
         button.addEventListener("click", function(){
             display_string += this.textContent;
             display.textContent = display_string;
+            enableOperator(button_list);
         } )
     }
     //conditional for clears
     if (button.className == "clear")
     {
         button.addEventListener("click", function(){
+            if (isInteger(display_string.slice(-1)) == false)
+            {
+                if (check > 0)
+                {
+                    check -= 1;
+                }
+            }
             display_string = display_string.slice(0, -1);
             display.textContent = display_string;
+            console.log(display.textContent)
+            if (isInteger(display.textContent.slice(-1)))
+            {
+                enableOperator(button_list);
+            }
+            
+            
             } )
     }
     if (button.className == "all-clear")
@@ -29,6 +46,8 @@ for (let i = 0; i < button_list.length ; i++)
         button.addEventListener("click", function(){
             display_string = "";
             display.textContent = display_string;
+            disableOperator(button_list);
+            check = 0;
             })
     }
     //conditional for operators;
@@ -38,17 +57,43 @@ for (let i = 0; i < button_list.length ; i++)
         button.className == "divide")
     {
         button.addEventListener("click", function(){
-            display_string += this.textContent;
-            display.textContent = display_string;})
+            check += 1;
+            console.log(check);
+            if (check > 1)
+            { 
+                display_string = operate() + this.textContent;
+                console.log(display_string);
+                display.textContent = display_string;
+                check = 1;
+            }
+            else{
+                display_string += this.textContent;
+                display.textContent = display_string;
+            }
+            
+            
+            disableOperator(button_list);
+            })
 
     }
     //conditional for equals
     if (button.className == "equal")
     {
-        button.addEventListener("click", operate);
-        display_string = display.textContent;
+        button.addEventListener("click", () => 
+        { 
+            if (check == 1 && isInteger(display_string.slice(-1)))
+            {
+                check -= 1;
+                display_string = operate();
+                display.textContent = display_string;
+                enableOperator(button_list);
+            }
+        } )
+
     }
 }
+
+disableOperator(button_list);
 
 
 
@@ -62,10 +107,6 @@ function operate(){
     //split up the operants and operators
     for (let i = 0; i < expression.length; i++)
     {
-
-        console.log(change);
-        console.log(expression[i]);
-        console.log(Number.isInteger(expression[i]));
         if (isInteger(expression[i]) == false)
         {
             change = true;
@@ -84,23 +125,24 @@ function operate(){
     // check for the type of operators
     if (operator == "+")
     {
-        display.textContent = add(first_int, second_int);
+        return String(add(first_int, second_int)); 
     }
     else if (operator == "-")
     {
-        display.textContent = subtract(first_int, second_int);
+        return String(subtract(first_int, second_int));
     }
     else if (operator == "÷")
     {
-        display.textContent = divide(first_int, second_int);
+        return String(divide(first_int, second_int));
     }
     
     else if (operator == "x")
     {
-        display.textContent = multiply(first_int, second_int);
+        return String(multiply(first_int, second_int));
     }
     
 }
+
 
 // operator functions
 function add(a, b){
@@ -121,4 +163,33 @@ function divide(a, b){
 
 function isInteger(a){
     return /^\d+$/.test(a);
+}
+
+function enableOperator(button_list){
+    for (let i = 0; i < button_list.length; i++)
+    {
+        let button = button_list[i];
+        if (button.className == "add" || 
+        button.className == "subtract" ||
+        button.className == "multiply" ||
+        button.className == "divide")
+        {
+            button.disabled = false;
+        }
+    }
+
+}
+
+function disableOperator(button_list){
+    for (let i = 0; i < button_list.length; i++)
+    {
+        let button = button_list[i];
+        if (button.className == "add" || 
+        button.className == "subtract" ||
+        button.className == "multiply" ||
+        button.className == "divide")
+        {
+            button.disabled = true;
+        }
+    }
 }
