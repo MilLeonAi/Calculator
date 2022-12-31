@@ -20,16 +20,31 @@ body{
 .display{
     height: 64px;
     width: 320px;
+    border: 2px solid;
+    border-color: rgb(31, 25, 25);
+    font-size: 32px;
+    color:rgb(31, 25, 25);
+    text-align: right;
+    word-spacing: 6em;
+
 }
 
 
 button{
-    background-color: lightgray;
+    background-color: rgb(31, 25, 25);
+    color: rgb(231, 223, 223);
+    border:none;
+    font:24px Helvetica;
     width:64px;
     height: 64px;
-    font-size: 16px;
+
 }
 
+button:hover{
+    background-color: rgb(255, 255, 255);
+    color: rgb(31, 25, 25);
+    border: 1px solid;
+}
 .equal{
     width: 128px;
 }
