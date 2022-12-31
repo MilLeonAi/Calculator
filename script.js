@@ -46,6 +46,7 @@ for (let i = 0; i < button_list.length ; i++)
     if (button.className == "equal")
     {
         button.addEventListener("click", operate);
+        display_string = display.textContent;
     }
 }
 
@@ -53,26 +54,52 @@ for (let i = 0; i < button_list.length ; i++)
 
 // operate function
 function operate(){
-    let first_sum = "";
-    let second_sum = "";
+    let first_string = "";
+    let second_string = "";
+    let operator = ""
+    let expression = display.textContent; 
     let change = false;
-    for (let i = 0; i < display.length; i++)
+    //split up the operants and operators
+    for (let i = 0; i < expression.length; i++)
     {
-        if (Number.isInteger(display[i]) == false)
+
+        console.log(change);
+        console.log(expression[i]);
+        console.log(Number.isInteger(expression[i]));
+        if (isInteger(expression[i]) == false)
         {
             change = true;
+            operator += expression[i];
         }
-
-        else if (change = false)
-        {
-            first_sum += display[i];
+        else if (change == false){
+            first_string += expression[i];
         }
-
-        else {
-            second_sum += display[i]
+        else{
+            second_string += expression[i];
         }
     }
-    console.log(first_sum, second_sum);
+    let first_int = parseInt(first_string);
+    let second_int = parseInt(second_string);
+
+    // check for the type of operators
+    if (operator == "+")
+    {
+        display.textContent = add(first_int, second_int);
+    }
+    else if (operator == "-")
+    {
+        display.textContent = subtract(first_int, second_int);
+    }
+    else if (operator == "÷")
+    {
+        display.textContent = divide(first_int, second_int);
+    }
+    
+    else if (operator == "x")
+    {
+        display.textContent = multiply(first_int, second_int);
+    }
+    
 }
 
 // operator functions
@@ -90,4 +117,8 @@ function multiply(a, b){
 
 function divide(a, b){
     return a/b;
+}
+
+function isInteger(a){
+    return /^\d+$/.test(a);
 }
